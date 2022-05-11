@@ -118,6 +118,8 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hao Ran"
+      src="/images/bluesky.jpeg">
   <p class="site-author-name" itemprop="name">Hao Ran</p>
   <div class="site-description" itemprop="description">天行健，君子以自强不息</div>
 </div>
@@ -171,7 +173,7 @@
     <link itemprop="mainEntityOfPage" href="https://chenghr.github.io/2022/05/09/blog-init/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/bluesky.jpeg">
       <meta itemprop="name" content="Hao Ran">
     </span>
 
@@ -204,7 +206,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-11 15:25:30" itemprop="dateModified" datetime="2022-05-11T15:25:30+08:00">2022-05-11</time>
+      <time title="修改时间：2022-05-11 15:26:22" itemprop="dateModified" datetime="2022-05-11T15:26:22+08:00">2022-05-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -227,41 +229,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>很早就有写博客的念头，碍于各种原因（主要是懒）拖延到现在。</p>
-<p>在我看来，个人博客是一个记录自己的学习过程以及成长过程的地方。虽然有那句话“正经人谁写日记啊”，但是偶尔看看曾经的自己是什么样的，也是挺有趣的一件事情。</p>
-<p>很早之前在网上查找学习资料的时候就被 hexo 的 next 主题风格深深的吸引住了，极简的风格，很符合程序员的浪漫，因此这次决定用 hexo + github page 的形式搭建自己的博客。</p>
-<h2 id="基础工具"><a href="#基础工具" class="headerlink" title="基础工具"></a>基础工具</h2><p>搭建博客之前要先安装两个基础工具：Git 以及 node.js。</p>
-<h3 id="1-Git-安装"><a href="#1-Git-安装" class="headerlink" title="1. Git 安装"></a>1. Git 安装</h3><p>Git是一款免费、开源的分布式版本控制系统，这里我们主要用于同步博客文件到 github 上，具体安装流程网上有很多教程，这里就不细说了。</p>
-<h3 id="2-node-js-安装"><a href="#2-node-js-安装" class="headerlink" title="2. node.js 安装"></a>2. node.js 安装</h3><p>需要利用 npm 安装 hexo。</p>
-<p>node.js 的具体安装过程也略过了。</p>
-<h2 id="初步建站"><a href="#初步建站" class="headerlink" title="初步建站"></a>初步建站</h2><h3 id="1-github-相关设置"><a href="#1-github-相关设置" class="headerlink" title="1. github 相关设置"></a>1. github 相关设置</h3><ul>
-<li><p>创建 github 账号</p>
-<p>用于后续配置网页博客，注意 github 账户名和个人博客地址息息相关，创建需慎重。</p>
-</li>
-<li><p>本地电脑配置 ssh key 到 github 账号</p>
-<p>便于后续博客文件的部署推送。</p>
-</li>
-</ul>
-<h3 id="2-本地初始化博客文件"><a href="#2-本地初始化博客文件" class="headerlink" title="2. 本地初始化博客文件"></a>2. 本地初始化博客文件</h3><p>​	在本地指定文件夹下进行 hexo 初始化。</p>
-<h3 id="3-本地博客关联到-github-page"><a href="#3-本地博客关联到-github-page" class="headerlink" title="3. 本地博客关联到 github page"></a>3. 本地博客关联到 github page</h3><ul>
-<li>github 中创建同名仓库 <code>github账户名.github.io</code></li>
-<li>本地修改 blog 文件夹下的配置文件 <code>_config.yml</code> 中的 <code>url </code>字段和<code>deploy </code>字段</li>
-</ul>
-<h3 id="4-博客推送"><a href="#4-博客推送" class="headerlink" title="4. 博客推送"></a>4. 博客推送</h3><ul>
-<li>使用 <code>hexo g </code>生成博客静态文件，再使用 <code>hexo d</code> 将文件推送到 github 上；</li>
-<li>浏览器中输入 <code>https://github账户名.github.io</code> 查看个人博客主页。</li>
-</ul>
-<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><p>上述两个流程网上有大量的相关资料，因此具体细节就不放上来了，主要是给个流程介绍，一些具体细节可以参考如下链接。</p>
-<blockquote>
-<ol>
-<li><p>mac 下使用 Github + Hexo 搭建个人博客</p>
-<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000038373795">https://segmentfault.com/a/1190000038373795</a></p>
-</li>
-<li><p>Windows&#x2F;Linux 下使用 hexo+github+NexT 主题建立个人博客网站</p>
-<p><a target="_blank" rel="noopener" href="https://choubin.site/2019/12/30/HowToBuildABlog/">https://choubin.site/2019/12/30/HowToBuildABlog/</a></p>
-</li>
-</ol>
-</blockquote>
-<h2 id="个性化设置"><a href="#个性化设置" class="headerlink" title="个性化设置"></a>个性化设置</h2>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/09/blog-init/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -290,7 +265,7 @@
     <link itemprop="mainEntityOfPage" href="https://chenghr.github.io/2022/05/09/life/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/bluesky.jpeg">
       <meta itemprop="name" content="Hao Ran">
     </span>
 
