@@ -20,15 +20,15 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"chenghr.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="天行健，君子以自强不息">
+    <meta name="description" content="LR 模型学习以及面试常见问答。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LR">
 <meta property="og:url" content="https://chenghr.github.io/2022/05/14/study/ML/LR/index.html">
 <meta property="og:site_name" content="Hao Ran&#39;s Blog">
-<meta property="og:description" content="天行健，君子以自强不息">
+<meta property="og:description" content="LR 模型学习以及面试常见问答。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-14T13:00:33.000Z">
-<meta property="article:modified_time" content="2022-05-14T13:01:06.882Z">
+<meta property="article:modified_time" content="2022-05-19T13:55:19.661Z">
 <meta property="article:author" content="Hao Ran">
 <meta name="twitter:card" content="summary">
 
@@ -102,7 +102,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -115,6 +115,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A8%A1%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="nav-text">一、模型推导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A8%A1%E5%9E%8B%E5%81%87%E8%AE%BE"><span class="nav-text">1.1 模型假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-logistic-%E5%9B%9E%E5%BD%92"><span class="nav-text">1.2 logistic 回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="nav-text">1.3 模型参数估计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9D%A2%E8%AF%95%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">二、面试常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%97%AE%E9%A2%98%E5%90%88%E9%9B%86"><span class="nav-text">2.1 问题合集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%97%AE%E9%A2%98%E8%A7%A3%E7%AD%94"><span class="nav-text">2.2 问题解答</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -129,7 +130,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -204,9 +205,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-05-14 21:00:33 / 修改时间：21:01:06" itemprop="dateCreated datePublished" datetime="2022-05-14T21:00:33+08:00">2022-05-14</time>
+      <time title="创建时间：2022-05-14 21:00:33" itemprop="dateCreated datePublished" datetime="2022-05-14T21:00:33+08:00">2022-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-19 21:55:19" itemprop="dateModified" datetime="2022-05-19T21:55:19+08:00">2022-05-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -228,7 +235,263 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <p>LR 模型学习以及面试常见问答。</p>
+<span id="more"></span>
+
+
+
+<h2 id="一、模型推导"><a href="#一、模型推导" class="headerlink" title="一、模型推导"></a>一、模型推导</h2><p>逻辑回归<strong>假设数据服从伯努利分布</strong>，通过<strong>极大化似然函数</strong>的方法，运用<strong>梯度下降</strong>来求解参数，来达到<strong>将数据二分类</strong>的目的。</p>
+<h3 id="1-1-模型假设"><a href="#1-1-模型假设" class="headerlink" title="1.1 模型假设"></a>1.1 模型假设</h3><ol>
+<li><p><strong>假设1：数据服从伯努利分布</strong></p>
+<p>伯努利分布：离散型概率分布;</p>
+<p>若成功，则随机变量取值1；若失败，随机变量取值为0。成功概率记为 p，失败为 q &#x3D; 1 - p。</p>
+</li>
+<li><p><strong>假设2：样本为正的概率为: $P(Y&#x3D;1|x) &#x3D; \frac{exp(w<em>x + b)}{1 + exp(w</em>x + b)}$</strong></p>
+</li>
+</ol>
+<h3 id="1-2-logistic-回归"><a href="#1-2-logistic-回归" class="headerlink" title="1.2 logistic 回归"></a>1.2 logistic 回归</h3><ol>
+<li><p>几率：</p>
+<p><strong>一个事件的几率是指该事件发生的概率与该事件不发生的概率的比值；</strong></p>
+<p>一个事件的<strong>对数几率</strong>为：$ logit(p) &#x3D; \frac{p}{1-p}$；</p>
+</li>
+<li><p>logistic 回归模型</p>
+<p><strong>输出 Y&#x3D;1 的对数几率是由输入 x 的线性函数表示的模型，即逻辑回归模型。</strong>具体的：</p>
+<p>我们希望得到一个模型使得样本被划分为正类的对数几率是特征 x 的线性组合，即</p>
+<p>​						$log\frac{P(Y&#x3D;1|x)}{1-P(Y&#x3D;1|x)} &#x3D; w<em>x$ 且 $w</em>x \rightarrow +\infin$ 时，$P(Y&#x3D;1) \rightarrow 1$；</p>
+<p>由上式可以推出：</p>
+<p>​						$\frac{P(Y&#x3D;1|x)}{1-P(Y&#x3D;1|x)} &#x3D; e^{w<em>x} \Rightarrow P(Y&#x3D;1|x) &#x3D; \frac{e^{w</em>x + b}}{1 + e^{w*x + b}} $</p>
+<p>可以看出<strong>逻辑回归正是对输入特征进行线性组合后应用 sigmoid 函数</strong>。</p>
+<p>sigmoid 是 logistic 分布的一种特例。</p>
+</li>
+</ol>
+<p> Logistic 回归实际上是使用线性回归模型的预测值逼近分类任务真实标记的对数几率，其优点有：</p>
+<ul>
+<li><p>直接对<strong>分类的概率</strong>建模，无需实现假设数据分布，从而避免了假设分布不准确带来的问题；</p>
+</li>
+<li><p>不仅可预测出类别，还能得到该<strong>预测的概率</strong>，这对一些利用概率辅助决策的任务很有用；</p>
+</li>
+<li><p>对数几率函数是<strong>任意阶可导的凸函数</strong>，有许多数值优化算法都可以求出最优解。</p>
+</li>
+</ul>
+<h3 id="1-3-模型参数估计"><a href="#1-3-模型参数估计" class="headerlink" title="1.3 模型参数估计"></a>1.3 模型参数估计</h3><ol>
+<li><p>损失函数</p>
+<p>$J(\theta) &#x3D; - \frac{1}{m}* [\sum_{i&#x3D;1}^{m}y_i * log(p_{x_i}) + (1-y_i)*log(1-p_{x_i})]$</p>
+<p>逻辑回归的损失函数是它的极大似然函数：</p>
+<p>另一种说法是 LR 采用交叉熵损失函数，交叉熵损失函数与极大似然估计的对数似然函数本质上是相同的；（最大化极大似然函数即最小化交叉熵损失函数）。</p>
+</li>
+<li><p>参数求解</p>
+<ul>
+<li><p>梯度下降</p>
+<p>梯度下降是通过 J(w) 对 w 的一阶导数来找下降方向，并且以迭代的方式来更新参数。</p>
+<p>$g_j &#x3D; \frac{\partial{J(w)}}{\partial{w_j}} &#x3D; (y - pred^i)*x^i$</p>
+<p>$w_j^{k+1} &#x3D; w_j^k + \alpha*g_j$</p>
+</li>
+<li><p>牛顿法</p>
+<p><strong>在现有极小点估计值的附近对 f(x) 做二阶泰勒展开，进而找到极小点的下一个估计值</strong>。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="二、面试常见问题"><a href="#二、面试常见问题" class="headerlink" title="二、面试常见问题"></a>二、面试常见问题</h2><h3 id="2-1-问题合集"><a href="#2-1-问题合集" class="headerlink" title="2.1 问题合集"></a>2.1 问题合集</h3><table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>特征角度</td>
+<td><strong>LR 模型为什么适合离散特征？离散化特征的好处有哪些？</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>LR 模型训练中有<strong>很多特征高度相关</strong>或者<strong>将一个特征重复一百次</strong>，会造成怎样的影响？</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="2-2-问题解答"><a href="#2-2-问题解答" class="headerlink" title="2.2 问题解答"></a>2.2 问题解答</h3><ol>
+<li><p>LR 为什么用 sigmoid 函数作为激活函数，其他函数不行吗？</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15067244/4610809">相关答案参考</a></p>
+</li>
+<li><p>从对数几率 logit 角度理解：</p>
+<ul>
+<li>LR 假设数据符合 logistic 分布，在基于几率的推导过程中发现，对数几率刚好同线性回归模型 $ W^T*x$ 取值范围相对应；进行自然得出结论，逻辑回归正是对输入特征进行线性组合后应用 sigmoid 函数。</li>
+<li>sigmoid 是 logistic 分布的一种特例。</li>
+</ul>
+</li>
+<li><p>从 sigmoid 函数角度理解：</p>
+<ul>
+<li><strong>logistic 是基于伯努利分布的假设，伯努利分布的指数簇形式就是 sigmoid 函数。</strong></li>
+<li>大多数情况下，并没有办法知道未知事件的概率分布形式，而在无法得知的情况下，正态分布是一个最好的选择，因为它是所有概率分布中最可能的表现形式；</li>
+<li><strong>Sigmoid函数和正态分布函数的积分形式形状非常类似</strong>。但计算正态分布的积分函数，计算代价非常大，而Sigmoid的形式跟它相似，却由于其公式简单，计算量非常的小，因此被选为替代函数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>sigmoid 函数的优秀性质</strong></p>
+<ul>
+<li>处处可导，且导数的计算非常快速；导数 &#x3D; $p*(1-p)$</li>
+<li>sigmoid 函数取值范围在 0~1 之间，在 0.5 中心对称，且<strong>越靠近 0.5 斜率越大，模型更加关注决策边界；</strong></li>
+</ul>
+</li>
+<li><p>Sigmoid 函数到底起了什么作用？</p>
+<p><strong>逻辑回归是在线性回归的基础上加了一个 Sigmoid 函数（非线性）映射，使得逻辑回归称为了一个优秀的分类算法。</strong>本质上来说，两者都属于广义线性模型，但他们两个要解决的问题不一样，逻辑回归解决的是分类问题，输出的是离散值，线性回归解决的是回归问题，输出的连续值。</p>
+<p>线性回归是在实数域范围内进行预测，而分类范围则需要在 [0,1]，逻辑回归减少了预测范围；<br><strong>线性回归在实数域上敏感度一致</strong>，而<strong>逻辑回归在 0 附近敏感，在远离 0 点位置不敏感</strong>，这个的好处就是<strong>模型更加关注分类边界，可以增加模型的鲁棒性。</strong></p>
+</li>
+<li><p><strong>逻辑回归估计参数时的目标函数逻辑回归的值表示概率吗？</strong></p>
+<p>LR 输出的值是彼此之间相对谁的可能性更高，值越大表示可能性越高；</p>
+<p>但是 LR 输出的值不是概率，概率是事情发生的可能， LR 输出的值不代表可能，因此不能说是概率。</p>
+</li>
+<li><p>LR 模型为什么使用极大似然函数（交叉熵损失函数），而不是平方误差函数？</p>
+<ul>
+<li>平方损失函数 + sigmoid 函数的组合是一个非凸函数，梯度下降求解容易得到局部最优解；而交叉熵损失函数会得到高阶连续可导凸函数，可求得最优解。</li>
+<li><strong>平方误差函数的梯度公式和激活函数的梯度有关</strong>，sigmoid 的梯度最大值为0.25，模型更新较慢；而<strong>交叉熵损失函数的梯度仅仅与预测值和 y 有关</strong>，模型更新较快。</li>
+</ul>
+</li>
+<li><p>LR中若标签为+1和-1，损失函数如何推导？</p>
+<p><strong>更改极大似然函数中的指数；</strong></p>
+<p>将 $J(\theta) &#x3D; - \frac{1}{m}* [\sum_{i&#x3D;1}^{m}y_i * log(p_{x_i}) + (1-y_i)*log(1-p_{x_i})]$</p>
+<p>变为：$J(\theta) &#x3D; - \frac{1}{m}* [\sum_{i&#x3D;1}^{m}\frac{y_i+1}{2} * log(p_{x_i}) + \frac{(1-y_i)}{2}*log(1-p_{x_i})]$</p>
+</li>
+<li><p>正则化的理论依据是什么？LR 中的 L1&#x2F; L2 正则项是什么？具体如何选择？</p>
+<ul>
+<li><p>正则化的理论依据</p>
+<p>在经验风险最小化的基础上（也就是训练误差最小化），尽可能采用简单的模型，可以有效提高泛化预测精度。</p>
+</li>
+<li><p>L1 正则化</p>
+<ul>
+<li><p>本质上是<strong>给模型增加一个先验知识：模型权重 w 服从零均值拉普拉斯分布；</strong></p>
+</li>
+<li><p>L1 正则化增加了所有权重 w 参数的绝对值之和，逼迫更多 w 为零，使得有效特征变稀疏，实现特征的自动选择；</p>
+</li>
+</ul>
+</li>
+<li><p>L2 正则化</p>
+<ul>
+<li>本质上是<strong>给模型增加一个先验知识：模型权重 w 服从零均值高斯正态分布；</strong></li>
+<li>L2 正则化中增加所有权重 w 参数的平方之和，逼迫所有 w 尽可能趋向零但不为零（L2 的导数趋于零），得到的解比较平滑（不是稀疏）。</li>
+</ul>
+</li>
+<li><p>具体选择</p>
+</li>
+</ul>
+</li>
+<li><p><strong>LR 模型为什么适合离散特征？离散化特征的好处有哪些？</strong></p>
+<p><strong>LR适合离散化的原因：</strong></p>
+<ul>
+<li><p>LR 属于广义线性模型，表达能力受限；</p>
+</li>
+<li><p>单变量离散化为N个后，每个变量有单独的权重，相当于<strong>为模型引入了非线性</strong>，能够提升模型表达能力，加大拟合；</p>
+</li>
+</ul>
+<p><strong>离散化的优点：</strong></p>
+<ul>
+<li>离散特征的增加和减少都很容易，易于模型的快速迭代；</li>
+<li>离散化后的特征向量变为稀疏向量，<strong>稀疏向量内积乘法运算速度快</strong>，计算结果方便存储，容易扩展；</li>
+<li>离散化后的特征<strong>对异常数据有很强的鲁棒性</strong>，模型也更稳定；</li>
+<li>特征离散化以后，简化了逻辑回归模型，降低了模型过拟合的风险；（）</li>
+<li><strong>离散化特征在 one-hot 展开后可以进行特征交叉</strong>，由M+N个变量变为M*N个变量，增大特征维度，进一步引入非线性，提升线性模型的表达能力。</li>
+</ul>
+</li>
+<li><p>LR 模型训练中有<strong>很多特征高度相关</strong>或者<strong>将一个特征重复一百次</strong>，会造成怎样的影响？</p>
+<ul>
+<li>结论：如果在损失函数最终收敛的情况下，其实就算有很多特征高度相关也不会影响分类器的效果。</li>
+<li>对特征本身来说的话，假设只有一个特征，在不考虑采样的情况下，你现在将它重复100遍，实质上将原来的特征分成了100份，<strong>每一个特征都是原来特征权重值的百分之一</strong>。</li>
+<li>如果在随机采样的情况下，其实训练收敛完以后，还是可以认为这100个特征和原来那一个特征扮演的效果一样，只是可能中间很多特征的值正负相消了。</li>
+</ul>
+</li>
+<li><p><strong>LR 模型训练中为什么要去除高度相关的特征？</strong></p>
+</li>
+</ol>
+<ul>
+<li><p>去掉高度相关的特征会<strong>让模型的可解释性更好</strong>；</p>
+</li>
+<li><p><strong>提高训练的速度</strong>。如果模型当中有很多特征高度相关的话，就算损失函数本身收敛了，但实际上参数是没有收敛的，这样会拉低训练的速度；其次是特征多了，本身就会增大训练的时间。</p>
+</li>
+</ul>
+<ol start="11">
+<li><p><strong>为什么要避免共线性？</strong></p>
+<ul>
+<li>如果在损失函数最终收敛的情况下，其实就算有很多特征高度相关也不会影响分类器的效果；</li>
+<li>每一个特征都是原来特征权重值的百分之一，线性可能解释性优点也消失了；</li>
+<li>增加训练收敛的难度及耗时，有限次数下可能共线性变量无法收敛，系数估计变得不可靠；</li>
+<li>泛化能力变差，训练是两列特征可能会共线性，当线上数据加入噪声后共线性消失，效果可能变差；</li>
+</ul>
+</li>
+<li><p><strong>为什么 LR 需要归一化或者取对数？</strong></p>
+<ul>
+<li><p>使得数据在某类上更服从高斯分布，满足前提假设；</p>
+</li>
+<li><p>加速梯度下降：<br>当不用归一化时，损失函数的等值线为椭圆形，进行梯度下降速度慢；使用归一化后，损失函数等值线为圆形，每次都朝着圆心的方向前进，速度快；</p>
+</li>
+</ul>
+</li>
+<li><p>LR 如何解决非线性问题？</p>
+</li>
+<li><p>LR 可以用核函数吗？如何使用？</p>
+</li>
+<li><p>梯度下降如何并行化？</p>
+</li>
+<li><p><strong>LR 和线性回归</strong></p>
+<ul>
+<li>线性回归和逻辑回归都是广义线性回归模型的特例</li>
+<li>线性回归只能用于回归问题，逻辑回归用于分类问题（可由二分类推广至多分类）</li>
+<li>线性回归使用最小二乘法作为参数估计方法，逻辑回归使用极大似然法作为参数估计方法</li>
+<li>逻辑回归引入了sigmoid函数，把y值从线性回归的(−∞,+∞)限制到了（0,1）的范围。</li>
+<li>逻辑回归通过阈值判断的方式，引入了非线性因素，可以处理分类问题。</li>
+<li>线性回归要求变量服从正态分布，logistic回归对变量分布没有要求。</li>
+</ul>
+</li>
+<li><p><strong>LR与最大熵模型</strong></p>
+<p>逻辑回归和最大熵模型本质上没有区别，最大熵在解决二分类问题时就是逻辑回归，在解决多分类问题时就是多项逻辑回归。</p>
+</li>
+<li><p><strong>LR与SVM</strong></p>
+<ul>
+<li><p>相同点</p>
+<ul>
+<li>都是分类算法，本质上都是在找最佳分类超平面；</li>
+<li>都是监督学习算法；</li>
+<li>都是判别式模型，判别模型不关心数据是怎么生成的，它只关心数据之间的差别，然后用差别来简单对给定的一个数据进行分类；</li>
+<li>都可以增加不同的正则项。</li>
+</ul>
+</li>
+<li><p>不同点</p>
+<ul>
+<li>LR 是一个统计的方法，SVM 是一个几何的方法；</li>
+<li>SVM 的处理方法是只考虑 Support Vectors，也就是和分类最相关的少数点去学习分类器。而逻辑回归通过非线性映射减小了离分类平面较远的点的权重，相对提升了与分类最相关的数据点的权重；</li>
+<li>损失函数不同：LR 的损失函数是交叉熵，SVM 的损失函数是 HingeLoss，这两个损失函数的目的都是增加对分类影响较大的数据点的权重，减少与分类关系较小的数据点的权重。对 HingeLoss 来说，其零区域对应的正是非支持向量的普通样本，从而所有的普通样本都不参与最终超平面的决定，这是支持向量机最大的优势所在，对训练样本数目的依赖大减少，而且提高了训练效率；</li>
+<li>LR 是参数模型，SVM 是非参数模型，参数模型的前提是假设数据服从某一分布，该分布由一些参数确定（比如正太分布由均值和方差确定），在此基础上构建的模型称为参数模型；非参数模型对于总体的分布不做任何假设，只是知道总体是一个随机变量，其分布是存在的（分布中也可能存在参数），但是无法知道其分布的形式，更不知道分布的相关参数，只有在给定一些样本的条件下，能够依据非参数统计的方法进行推断。所以 LR 受数据分布影响，尤其是样本不均衡时影响很大，需要先做平衡，而 SVM 不直接依赖于分布；</li>
+<li>LR 可以产生概率，SVM 不能；</li>
+<li>LR 不依赖样本之间的距离，SVM 是基于距离的；</li>
+<li>LR 相对来说模型更简单好理解，特别是大规模线性分类时并行计算比较方便。而 SVM 的理解和优化相对来说复杂一些，SVM 转化为对偶问题后，分类只需要计算与少数几个支持向量的距离，这个在进行复杂核函数计算时优势很明显，能够大大简化模型和计算。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>LR与朴素贝叶斯模型</strong></p>
+<ul>
+<li><p>相同点</p>
+<ul>
+<li>朴素贝叶斯和逻辑回归都属于分类模型，当朴素贝叶斯的条件概率 服从高斯分布时，它计算出来的 P(Y&#x3D;1|X) 形式跟逻辑回归是一样的。</li>
+</ul>
+</li>
+<li><p>不同点</p>
+<ul>
+<li><p>逻辑回归是判别式模型 p(y|x)，朴素贝叶斯是生成式模型 p(x,y)：</p>
+<p>判别式模型估计的是条件概率分布，给定观测变量 x 和目标变量 y 的条件模型，由数据直接学习决策函数 y&#x3D;f(x) 或者条件概率分布 P(y|x) 作为预测的模型。判别方法关心的是对于给定的输入 x，应该预测什么样的输出 y；而生成式模型估计的是联合概率分布，基本思想是首先建立样本的联合概率概率密度模型 P(x,y)，然后再得到后验概率 P(y|x)，再利用它进行分类，生成式更关心的是对于给定输入 x 和输出 y 的生成关系；</p>
+</li>
+<li><p>朴素贝叶斯的前提是条件独立，每个特征权重独立，所以如果数据不符合这个情况，朴素贝叶斯的分类表现就没逻辑会好了。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
     </div>
 
     
