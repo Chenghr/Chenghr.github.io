@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenghr.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="FM 模型的学习以及相关面试问题总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FM">
+<meta property="og:url" content="https://chenghr.github.io/2022/05/22/study/ML/FM/index.html">
+<meta property="og:site_name" content="Hao Ran&#39;s Blog">
+<meta property="og:description" content="FM 模型的学习以及相关面试问题总结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231029992.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csum_i%5En+%5Csum_j%5En+v_%7Bi,f%7D+x_i+v_%7Bj_f%7Dx_j=+%5Csum_i%5En+%5Bv_%7Bi,f%7D+x_i+(+%5Csum_j%5En++v_%7Bj_f%7Dx_j)%5D=+(%5Csum_j%5En++v_%7Bj_f%7Dx_j)++%5Csum_i%5En+v_%7Bi,f%7D+x_i=+(%5Csum_i%5En+v_%7Bi,f%7D+x_i)%5E2">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231054220.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231053593.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231053114.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231113307.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231124290.png">
+<meta property="article:published_time" content="2022-05-22T02:38:19.000Z">
+<meta property="article:modified_time" content="2022-05-23T03:24:08.802Z">
+<meta property="article:author" content="Hao Ran">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231029992.png">
+
+
+<link rel="canonical" href="https://chenghr.github.io/2022/05/22/study/ML/FM/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://chenghr.github.io/2022/05/22/study/ML/FM/","path":"2022/05/22/study/ML/FM/","title":"FM"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FM | Hao Ran's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hao Ran's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81FM-%E6%A8%A1%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="nav-text">一、FM 模型介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E7%AE%80%E4%BB%8B"><span class="nav-text">1.1 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%8A%A8%E6%9C%BA"><span class="nav-text">1.2 动机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-FM-%E7%89%B9%E5%BE%81%E7%BB%84%E5%90%88"><span class="nav-text">1.3 FM 特征组合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.3.1 多项式模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-FM-%E6%A8%A1%E5%9E%8B"><span class="nav-text">1.3.2 FM 模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-%E4%BA%8C%E6%AC%A1%E9%A1%B9%E5%8C%96%E7%AE%80"><span class="nav-text">1.3.3 二次项化简</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B1%82%E8%A7%A3"><span class="nav-text">1.3.4 梯度下降求解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81FM-%E6%A8%A1%E5%9E%8B%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-text">二、FM 模型面试题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Hao Ran"
+      src="/images/bluesky2.jpg">
+  <p class="site-author-name" itemprop="name">Hao Ran</p>
+  <div class="site-description" itemprop="description">天行健，君子以自强不息</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://chenghr.github.io/2022/05/22/study/ML/FM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/bluesky2.jpg">
+      <meta itemprop="name" content="Hao Ran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hao Ran's Blog">
+      <meta itemprop="description" content="天行健，君子以自强不息">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FM | Hao Ran's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FM
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-22 10:38:19" itemprop="dateCreated datePublished" datetime="2022-05-22T10:38:19+08:00">2022-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-23 11:24:08" itemprop="dateModified" datetime="2022-05-23T11:24:08+08:00">2022-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">机器学习基础</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/%E6%90%9C%E6%8E%A8%E5%B9%BF%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">搜推广学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>FM 模型的学习以及相关面试问题总结。</p>
+<span id="more"></span>
+
+<h2 id="一、FM-模型介绍"><a href="#一、FM-模型介绍" class="headerlink" title="一、FM 模型介绍"></a>一、FM 模型介绍</h2><h3 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h3><p>FM（<strong>Factorization Machine</strong>，因子分解机）算法是一种基于矩阵分解的机器学习算法，是为了<strong>解决大规模稀疏矩阵中特征组合问题</strong>。</p>
+<p>FM 的优点：</p>
+<ul>
+<li>FM模型可以在非常稀疏的数据中，进行合理的参数估计；</li>
+<li>FM的<strong>时间复杂度线性的，为 O(kn)，</strong>可以直接优化原问题的参数，而不需要依靠支持向量或者是转化成对偶问题解决；</li>
+<li>FM是通用的模型，可以适用于任何实数特征的场景，其他的因式分解模型只能用于一些输入数据比较固定的情况。</li>
+</ul>
+<h3 id="1-2-动机"><a href="#1-2-动机" class="headerlink" title="1.2 动机"></a>1.2 动机</h3><ol>
+<li><p><strong>解决数据稀疏性的问题</strong></p>
+<p>在实际场景中，经常使用 One-Hot 编码，但是 One-Hot 编码会带来<strong>数据稀疏性</strong>以及<strong>特征空间急剧增大</strong>两个问题。</p>
+<p>CTR&#x2F;CVR预测时，假设商品的末级品类约有550个，采用One-Hot编码则会生成550个数值特征，但每个样本的这550个特征，有且仅有一个是有效的（非零），产生了数据稀疏性；另外一个 categorical 特征转换为550 维数值特征，特征空间剧增。</p>
+</li>
+<li><p><strong>考虑特征之间的关联信息</strong></p>
+<p>同时通过观察大量的样本数据可以发现，某些特征经过关联之后，与label之间的相关性就会提高。例如，“USA”与“Thanksgiving”、“China”与“Chinese New Year”这样的关联特征，对用户的点击有着正向的影响。换句话说，来自“China”的用户很可能会在“Chinese New Year”有大量的浏览、购买行为，而在“Thanksgiving”却不会有特别的消费行为。这种<strong>关联特征与label的正向相关性在实际问题中是普遍存在的</strong>，如“化妆品”类商品与“女”性，“球类运动配件”的商品与“男”性，“电影票”的商品与“电影”品类偏好等。因此，引入两个特征的组合是非常有意义的。</p>
+</li>
+</ol>
+<h3 id="1-3-FM-特征组合"><a href="#1-3-FM-特征组合" class="headerlink" title="1.3 FM 特征组合"></a>1.3 FM 特征组合</h3><h4 id="1-3-1-多项式模型"><a href="#1-3-1-多项式模型" class="headerlink" title="1.3.1 多项式模型"></a>1.3.1 多项式模型</h4><p>​					$ y(x) &#x3D; w_0 + \sum_{i&#x3D;1}^{n}w_i*x_i + \sum_{i&#x3D;1}^n\sum_{j&#x3D;i+1}^nw_{ij}<em>x_i</em>x_j$</p>
+<p>其中 $n$ 代表样本的特征数量，$ x_i $ 是第 i 个特征的值，$w_0, w_i, w_{ij}$ 是模型参数。</p>
+<ul>
+<li><p>从公式可以看出，组合特征的参数一共有 $\frac{n(n−1)}{2}$ 个，任意两个参数都是独立的；</p>
+</li>
+<li><p>在数据稀疏性普遍存在的实际应用场景中，二次项参数的训练是很困难的。</p>
+<p>其原因是，每个参数 $w_{ij}$ 的训练需要大量 $x_i$ 和 $x_j$ 都非零的样本；由于样本数据本来就比较稀疏，满足“$x_i$ 和 $x_j$ 都非零”的样本将会非常少。训练样本的不足，很容易导致参数不准确，最终将严重影响模型的性能。</p>
+</li>
+</ul>
+<h4 id="1-3-2-FM-模型"><a href="#1-3-2-FM-模型" class="headerlink" title="1.3.2 FM 模型"></a>1.3.2 FM 模型</h4><p>​					$ y(x) &#x3D; w_0 + \sum_{i&#x3D;1}^{n}w_i*x_i + \sum_{i&#x3D;1}^n\sum_{j&#x3D;i+1}^n&lt;v_i, v_j&gt;<em>x_i</em>x_j$</p>
+<p>其中 $v_i$ 表示特征 $x_i$ 的隐向量，隐向量的长度为 k（k &lt;&lt; n），包含 k 个描述特征的因子；$ &lt;v_i, v_j&gt;$ 表示两个隐向量之间的点积；</p>
+<ul>
+<li>隐向量的思路是基于矩阵分解的思路得出的；</li>
+<li>二次项的参数数量减少为 kn个，远少于多项式模型的参数数量；</li>
+<li>参数因子化使得 $x_ix_j$ 的参数和 $x_jx_k$ 的参数不再是相互独立的，具体来说， $x_ix_j$ 和 $x_jx_k$ 的系数分别为 $ &lt;v_i, v_j&gt;$ 和 $ &lt;v_j, v_k&gt;$ ，有共同项 $ v_j $。也就是说，所有包含 “ $x_j$ 的非零组合特征” 的样本都可以用来学习隐向量 $v_j$ ，这很大程度上避免了数据稀疏性造成的影响。 因此我们可以在样本稀疏的情况下相对合理地估计FM的二次项参数。</li>
+<li>这里k维辅助向量类似于<strong>词向量</strong>，但是和词向量存在区别，词向量中是将一个单词转换为向量表示形式，而单词是固定的，因此一个单词对应一个词向量；而在FM中，我们是将一个类别特征 onehot 后的每一个特征分量映射到一个向量。</li>
+<li>可以看出 FM 模型是一个通用的拟合方程，可以采用不同的损失函数用于解决回归、二元分类等问题，比如可以采用MSE（Mean Square Error）损失函数来求解回归问题，也可以采用Hinge&#x2F;Cross-Entropy损失来求解分类问题，可以采用维pairwise loss 来求解排序模型。</li>
+<li>本质上FM就是把显示的两两特征间的相关系数$w_{ij}$，转化为一种向量乘积表示的形式，通过学习这种特征的表示向量，使得学到的特征间关系不仅仅是显示表示的部分，而且包含更为深刻的关联性；与此同时，这种学习方法，也更为适合高维稀疏数据场景，因为这种表示向量并不依靠具体的两两特征数据样本来学习，而是可以通过现有关联的两两特征间的数据来学习，通过这种间接的方式，摆脱了相关系数的学习依赖具体两两特征的局限性，因此具有很好的效果。</li>
+</ul>
+<h4 id="1-3-3-二次项化简"><a href="#1-3-3-二次项化简" class="headerlink" title="1.3.3 二次项化简"></a>1.3.3 二次项化简</h4><p>FM 的二次项可以进一步化简，从 O($kn^2$) 优化到 O($kn$)。</p>
+<img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231029992.png" alt="image-20220523102920964" style="zoom: 20%;" />
+
+<ol>
+<li><p><strong>公式推导过程：</strong></p>
+<ul>
+<li><p>第一行公式等号左边其实就是<strong>矩阵主对角线上方的元素（注意元素下标）</strong>，整体的参数矩阵是对称矩阵，对称矩阵主对角线上方的元素 &#x3D; （整个矩阵减去对角线的元素）&#x2F;2；</p>
+</li>
+<li><p>把内积展开为两向量对应位置元素积的和；</p>
+</li>
+<li><p>主要是第一项变换，提取出k之后，剩余的为：<br><img src="https://www.zhihu.com/equation?tex=%5Csum_i%5En+%5Csum_j%5En+v_%7Bi,f%7D+x_i+v_%7Bj_f%7Dx_j=+%5Csum_i%5En+%5Bv_%7Bi,f%7D+x_i+(+%5Csum_j%5En++v_%7Bj_f%7Dx_j)%5D=+(%5Csum_j%5En++v_%7Bj_f%7Dx_j)++%5Csum_i%5En+v_%7Bi,f%7D+x_i=+(%5Csum_i%5En+v_%7Bi,f%7D+x_i)%5E2" alt="[公式]"></p>
+</li>
+</ul>
+</li>
+<li><p><strong>公式含义：</strong></p>
+<ul>
+<li><p>FM的二次项化简为只与 $v_{i,f}$ 有关的等式。因此FM可以在线性时间对新样本做出预测，复杂度和LR模型一样，且效果提升不少。</p>
+</li>
+<li><p>原始公式难以进行梯度反向传播，变换形式后反向梯度计算就非常方便。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-3-4-梯度下降求解"><a href="#1-3-4-梯度下降求解" class="headerlink" title="1.3.4 梯度下降求解"></a>1.3.4 梯度下降求解</h4><ul>
+<li><p>$w_0$ 的导数为 1；</p>
+</li>
+<li><p>$w_i$ 的导数为 $ x_i$；</p>
+</li>
+<li><p>**$v_{i, f}$ 的导数为 $ x_i(\sum_{j&#x3D;1}^nv_{j,f}<em>x_j) - v_{i,f}<em>x_i^2$；</em></em></p>
+<ul>
+<li><p>**注意 $\sum_{j&#x3D;1}^nv_{j,f}*x_j$ 是和 i 无关的，可以事先求解出来**，每个梯度都可以在 O(1) 时间内求出来，整体参数的更新时间为 O(kn)（模型参数共有 1+n+kn 个）。</p>
+</li>
+<li><p>公式推导</p>
+<p><img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231054220.png" alt="image-20220523105446193"></p>
+<img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231053593.png" alt="image-20220523105309554" style="zoom:50%;" />
+
+<img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231053114.png" alt="image-20220523105356071" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+<h2 id="二、FM-模型面试题"><a href="#二、FM-模型面试题" class="headerlink" title="二、FM 模型面试题"></a>二、FM 模型面试题</h2><ol>
+<li><p><strong>FM 模型的公式写一下</strong></p>
+<img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231113307.png" alt="image-20220523111351274" style="zoom:50%;" />
+</li>
+<li><p><strong>为什么要引入隐向量？</strong></p>
+<p>为了用两个隐向量的內积模拟二次项的参数，从而极大降低参数个数，并且缓解二次项稀疏的问题。</p>
+</li>
+<li><p><strong>加入隐向量降低复杂度可以理解了，可是为什么要做形如公式2的变换？</strong></p>
+<ul>
+<li><p>原始的式子（等号左边）难以进行梯度反向传播，变换后的反向梯度计算就非常方便。</p>
+</li>
+<li><p>降低计算的时间复杂度。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>公式2 怎么推导出来的？</strong></p>
+<p>对称矩阵的半角；内积展开；提取合并求和项。</p>
+</li>
+<li><p><strong>如何进行梯度的反向传播？</strong></p>
+<p>见上面的公式。</p>
+</li>
+<li><p><strong>在推荐系统里是怎么用的呢？</strong></p>
+<p>略。</p>
+</li>
+<li><p><strong>FM 和 MF  的区别？</strong></p>
+<ul>
+<li><strong>MF是FM的特例</strong>，即MF是特征只有User ID 和Item ID的FM模型；</li>
+<li>FM矩阵将User和Item（离散特征）都进行了<strong>one-hot编码</strong>作为特征，使得特征维度非常巨大且稀疏；</li>
+<li>矩阵分解MF只适用于评分预测，进行简单的特征计算，无法利用其他特征；</li>
+<li>FM引入了更多辅助信息（Side information）作为特征；</li>
+<li>FM在<strong>计算二阶特征组合系数</strong>的时候，<strong>使用了MF</strong>。</li>
+</ul>
+</li>
+<li><p><strong>FM 与多项式核SVM的区别？</strong></p>
+<p><img src="https://raw.githubusercontent.com/Chenghr/pictures/main/blog_pic/202205231124290.png" alt="image-20220523112402263"></p>
+</li>
+</ol>
+<blockquote>
+<p>参考链接</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://tech.meituan.com/2016/03/03/deep-understanding-of-ffm-principles-and-practices.html">深入FFM原理与实践——美团</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/109980037">一文读懂FM模型</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/351090832">一文搞定FM模型面试题</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/lgh1700/article/details/100656946">FM算法推导及python实例分析</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fantacy10000/article/details/95389659">CTR的模型：FM、FFM和DeepFM的理解</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.hrwhisper.me/machine-learning-fm-ffm-deepfm-deepffm/">『我爱机器学习』FM、FFM与DeepFM</a></li>
+<li><a target="_blank" rel="noopener" href="https://alice1214.github.io/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/2020/07/20/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0-%E5%85%AB-%E5%9B%A0%E5%AD%90%E5%88%86%E8%A7%A3%E6%9C%BA/">推荐算法学习（八）：因子分解机</a></li>
+</ol>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Hao Ran
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://chenghr.github.io/2022/05/22/study/ML/FM/" title="FM">https://chenghr.github.io/2022/05/22/study/ML/FM/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/21/study/ML/tree/" rel="prev" title="tree">
+                  <i class="fa fa-chevron-left"></i> tree
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/23/DecisionTree/" rel="next" title="DecisionTree">
+                  DecisionTree <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hao Ran</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
